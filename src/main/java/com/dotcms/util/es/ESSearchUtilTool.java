@@ -5,7 +5,6 @@ import com.dotcms.rendering.velocity.viewtools.content.ContentMap;
 import com.dotmarketing.beans.Host;
 import com.dotmarketing.business.APILocator;
 import com.dotmarketing.business.web.WebAPILocator;
-import com.dotmarketing.common.model.ContentletSearch;
 import com.dotmarketing.exception.DotDataException;
 import com.dotmarketing.exception.DotSecurityException;
 import com.dotmarketing.portlets.contentlet.business.ContentletAPI;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ESSearchUtilTool implements ViewTool {
     private User user = null;
@@ -73,20 +71,15 @@ public class ESSearchUtilTool implements ViewTool {
 
         long start = System.currentTimeMillis();
 
-        List<ContentletSearch> list = new ArrayList<>();
+        List<String> inodes = new ArrayList<>();
         for (SearchHit sh : contents.getHits()) {
             try {
                 Map<String, Object> sourceMap = sh.getSourceAsMap();
-                ContentletSearch conwrapper = new ContentletSearch();
-                conwrapper.setInode(sourceMap.get("inode").toString());
-                list.add(conwrapper);
+                inodes.add(sourceMap.get("inode").toString());
             } catch (Exception e) {
                 Logger.error(this, e.getMessage(), e);
             }
         }
-        List<String> inodes = list.stream()
-                .map(ContentletSearch::getInode)
-                .collect(Collectors.toList());
 
         APILocator.getContentletAPIImpl().findContentlets(inodes).stream()
                 .filter(contentlet -> Objects.nonNull(contentlet.getInode()))

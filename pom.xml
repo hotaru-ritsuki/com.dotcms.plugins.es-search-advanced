@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Build setup follows the official dotCMS plugin examples:
+         https://github.com/dotcms-community/plugin-examples -->
+    <groupId>com.dotcms.plugins</groupId>
+    <artifactId>com.dotcms.plugins.es-search-advanced</artifactId>
+    <version>0.3</version>
+    <packaging>bundle</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- dotCMS core compiles to and runs on Java 25 -->
+        <maven.compiler.release>25</maven.compiler.release>
+        <dotcms-core.version>26.11.10-02</dotcms-core.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>dotcms-repo</id>
+            <url>https://artifactory.dotcms.cloud/artifactory/libs-release</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dotcms</groupId>
+            <artifactId>dotcms-core</artifactId>
+            <version>${dotcms-core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>6.2.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-Vendor>RBCGAM</Bundle-Vendor>
+                        <Bundle-Description>RBCGAM - ES Search Advanced</Bundle-Description>
+                        <Bundle-DocURL>https://dotcms.com/</Bundle-DocURL>
+                        <Bundle-Activator>com.dotcms.util.es.Activator</Bundle-Activator>
+                        <Import-Package>*;version=0</Import-Package>
+                        <_noee>true</_noee>
+                        <!-- keep java.* out of Import-Package, as in the previous Gradle/bnd 3 build -->
+                        <_noimportjava>true</_noimportjava>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
